@@ -4,12 +4,13 @@ services:
         image: mysql:5.6
 #        working_dir: /application
         volumes:
-          - .:/application
+          - ./dump:/docker-entrypoint-initdb.d
         restart: always
         environment:
           - MYSQL_ROOT_PASSWORD=root
           - MYSQL_DATABASE=my_db
-          - MYSQL_USER=db_user
+          - MYSQL_USER=testuser
+          - MYSQL_PASSWORD=testpassword
         ports:
           - "3306:3306"
   website:
@@ -17,8 +18,8 @@ services:
     build:
       context: ./
     volumes:
-      - D:/ACML/ACMLProject/src:/var/www/html
+      - ./src:/var/www/html
     ports:
-      - 8081:80
+      - 8000:80
     depends_on:
       - mysql
