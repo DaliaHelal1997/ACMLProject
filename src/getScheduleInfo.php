@@ -1,14 +1,18 @@
-<?php 
-	$schedules_API= "https://my.api.mockaroo.com/schedules__json_.json?key=6a7b1d00";
-	$schedules_data_string= file_get_contents($schedules_API);
-	$schedules_data_Arr= json_decode($schedules_data_string, true); //turns string into json array if true; if false it returns as an object
-	
-	function getAllSchedules($schedules_data_Arr){ //returns a [1 x n] array where each cell is a 5x5 array representing a schedule
+<?php
+
+	function getAllSchedules($index){ //returns a [1 x n] array where each cell is a 5x5 array representing a schedule
+		$schedules_API= "https://my.api.mockaroo.com/schedules__json_.json?key=6a7b1d00";
+		$schedules_data_string= file_get_contents($schedules_API);
+		//echo $schedules_data_string;
+		$schedules_data_Arr= json_decode($schedules_data_string, true); //turns string into json array if true; if false it returns as an object
 		
 		$allSchedules= array();
-
 		for($i=0; $i<count($schedules_data_Arr); $i++){
-			$allSchedules[$i]= getOneSchedule($schedules_data_Arr[$i]["schedule"]);
+			$allSchedules[$i]= $schedules_data_Arr[$i]["schedule"];
+			if($i==$index){
+				print_r('<pre>' . json_encode($allSchedules[$i], JSON_PRETTY_PRINT) . '</pre>');
+				return $allSchedules[$i];
+			}
 			// var_dump($allSchedules[$i]);
 			// echo "<br>";
 			// echo "<br>";
@@ -16,7 +20,7 @@
 		return $allSchedules;
 	}
 	
-	function getOneSchedule($jsonSched){
+	/*function getOneSchedule($jsonSched){
 		$schedule= array(); // to be filled into a single 5x5 array
 		
 		//fill sunday row
@@ -56,9 +60,8 @@
 		}
 		
 		return $schedule;
-	}
+	}*/
 	
-	$res = getAllSchedules($schedules_data_Arr);
 //	var_dump($res);
 	
 ?>
